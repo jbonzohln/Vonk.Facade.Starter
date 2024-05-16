@@ -13,7 +13,7 @@ stages:
   jobs:
   - template: build.yml@templates  # Template reference
     parameters:
-      dotNetCoreVersion: '6.0.x'
+      dotNetCoreVersion: '8.0.x'
       nuGetServiceConnections: GitHub_FirelyTeams_NuGetFeed
       nuGetSources: --source https://nuget.pkg.github.com/FirelyTeam/index.json
       pool:
