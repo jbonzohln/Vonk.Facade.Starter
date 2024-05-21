@@ -3,6 +3,7 @@
   <PropertyGroup>
     <FirelySDKVersion>5.7.0</FirelySDKVersion>
     <FirelyServerVersion>5.*-*</FirelyServerVersion>
+    <EFCoreVersion>8.0.4</EFCoreVersion>
   </PropertyGroup>
 
 </Project>
