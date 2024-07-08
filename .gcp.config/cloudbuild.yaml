@@ -1,9 +1,12 @@
+substitutions:
+  _IMAGE_NAME: firely-example
+  
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
       - '-t'
-      - 'gcr.io/rhode-island-hln/github.com/jbonzohln/vonk.facade.starter:$COMMIT_SHA'
+      - 'us-docker.pkg.dev/${PROJECT_ID}/gcr.io/${_IMAGE_NAME}:${BRANCH_NAME}'
       - '-f'
       - 'deploy/Dockerfile'
       - '.'
