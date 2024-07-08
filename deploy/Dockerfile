@@ -11,7 +11,7 @@ FROM firely/server
 WORKDIR /app
 COPY deploy/firelyserver-license.json .
 COPY deploy/appsettings.instance.json .
-RUN sed -i "s/Password=<PASSWORD>/Password=$_DB_PASSWORD/g" appsettings.instance.json
+RUN sed -i "s/Password=<PASSWORD>/Password=$DB_PASSWORD/g" appsettings.instance.json
 RUN cat appsettings.instance.json
 
 COPY --from=build /app/publish/Visi.Repository.dll plugins/.
