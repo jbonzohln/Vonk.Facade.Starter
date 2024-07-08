@@ -1,13 +1,9 @@
-﻿using Hl7.Fhir.ElementModel;
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Rest;
+﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Support;
-using System;
-using System.Linq;
 using Visi.Repository.Models;
 using Vonk.Core.Common;
-// using Vonk.Fhir.R3;
 using Vonk.Fhir.R4;
+// using Vonk.Fhir.R3;
 
 namespace Visi.Repository;
 

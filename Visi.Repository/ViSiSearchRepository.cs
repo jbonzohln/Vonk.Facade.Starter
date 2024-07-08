@@ -16,8 +16,8 @@ namespace Visi.Repository;
 [ContextAware(InformationModels = new[] { VonkConstants.Model.FhirR4 })]
 public class ViSiSearchRepository : SearchRepository
 {
-    private readonly ViSiContext _visiContext;
     private readonly ResourceMapper _resourceMapper;
+    private readonly ViSiContext _visiContext;
 
     public ViSiSearchRepository(QueryContext queryBuilderContext, ViSiContext visiContext,
         ResourceMapper resourceMapper) : base(queryBuilderContext)

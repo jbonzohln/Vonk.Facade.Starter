@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
 using Hl7.Fhir.Model;
-using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using Visi.Repository.Models;
 using Vonk.Core.Common;
-using Vonk.Core.Model;
 using Vonk.Core.Repository;
 using Vonk.Core.Repository.ResultShaping;
 using Vonk.Facade.Relational;
@@ -31,8 +27,7 @@ public class PatientQueryFactory : VisiQueryFactory<Child, PatientQuery>
             {
                 if (!long.TryParse(value.Code, out var patientId))
                     throw new ArgumentException("Patient Id must be an integer value.");
-                else
-                    return PredicateQuery(vp => vp.ChildId == patientId);
+                return PredicateQuery(vp => vp.ChildId == patientId);
             }
             case "identifier":
                 return PredicateQuery(vp => vp.ChildId.ToString() == value.Code);

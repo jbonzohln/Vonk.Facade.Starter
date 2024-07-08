@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
 using Visi.Repository.Models;
 using Vonk.Core.Common;
@@ -13,8 +11,8 @@ namespace Visi.Repository;
 [ContextAware(InformationModels = new[] { VonkConstants.Model.FhirR4 })]
 public class ViSiChangeRepository : IResourceChangeRepository
 {
-    private readonly ViSiContext _visiContext;
     private readonly ResourceMapper _resourceMapper;
+    private readonly ViSiContext _visiContext;
 
     public ViSiChangeRepository(ViSiContext visiContext, ResourceMapper resourceMapper)
     {

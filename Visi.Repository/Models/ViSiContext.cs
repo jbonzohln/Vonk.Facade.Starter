@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Visi.Repository.Models;
 
-public partial class ViSiContext : DbContext
+public class ViSiContext : DbContext
 {
     private readonly IOptions<DbOptions> _dbOptionsAccessor;
 
@@ -21,15 +21,13 @@ public partial class ViSiContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
-        {
             // optionsBuilder.UseSqlServer(_dbOptionsAccessor.Value.ConnectionString);
             optionsBuilder.UseOracle(_dbOptionsAccessor.Value.ConnectionString);
-        }
     }
 }
 
 [Table("CHILD", Schema = "RICAP")]
-public partial class Child
+public class Child
 {
     [Column("CHILD_ID")] public int? ChildId { get; set; }
 

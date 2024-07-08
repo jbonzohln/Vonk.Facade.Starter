@@ -19,4 +19,3 @@ COPY --from=build /app/publish/Visi.Repository.dll plugins/.
 COPY --from=build /app/publish/Oracle.ManagedDataAccess.dll plugins/.
 COPY --from=build /app/publish/Oracle.EntityFrameworkCore.dll plugins/.
 COPY --from=build /app/publish/System.DirectoryServices.Protocols.dll plugins/.
-
