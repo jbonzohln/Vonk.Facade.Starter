@@ -10,3 +10,7 @@ steps:
       - '-f'
       - 'deploy/Dockerfile'
       - '.'
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-docker.pkg.dev/${PROJECT_ID}/gcr.io/${_IMAGE_NAME}:${BRANCH_NAME}'
