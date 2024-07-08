@@ -1,7 +1,6 @@
-﻿namespace Visi.Repository
+﻿namespace Visi.Repository;
+
+public class DbOptions
 {
-    public class DbOptions
-    {
-        public string ConnectionString { get; set; }
-    }
+    public string ConnectionString { get; set; }
 }

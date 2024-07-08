@@ -6,20 +6,19 @@ using Vonk.Core.Pluggability;
 using Vonk.Core.Pluggability.ContextAware;
 using Vonk.Core.Repository;
 
-namespace Visi.Repository
-{
-    [VonkConfiguration(order: 240)]
-    public static class ViSiConfiguration
-    {
-        public static IServiceCollection AddViSiServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddDbContext<ViSiContext>();
-            services.TryAddSingleton<ResourceMapper>();
-            services.TryAddContextAware<ISearchRepository, ViSiSearchRepository>(ServiceLifetime.Scoped);
-            services.TryAddContextAware<IResourceChangeRepository, ViSiChangeRepository>(ServiceLifetime.Scoped);
+namespace Visi.Repository;
 
-            services.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
-            return services;
-        }
+[VonkConfiguration(240)]
+public static class ViSiConfiguration
+{
+    public static IServiceCollection AddViSiServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<ViSiContext>();
+        services.TryAddSingleton<ResourceMapper>();
+        services.TryAddContextAware<ISearchRepository, ViSiSearchRepository>(ServiceLifetime.Scoped);
+        services.TryAddContextAware<IResourceChangeRepository, ViSiChangeRepository>(ServiceLifetime.Scoped);
+
+        services.Configure<DbOptions>(configuration.GetSection(nameof(DbOptions)));
+        return services;
     }
 }
