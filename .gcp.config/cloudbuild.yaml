@@ -1,0 +1,9 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/rhode-island-hln/github.com/jbonzohln/vonk.facade.starter:$COMMIT_SHA'
+      - '-f'
+      - 'deploy/Dockerfile'
+      - '.'
