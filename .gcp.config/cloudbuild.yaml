@@ -6,7 +6,7 @@ steps:
     args:
       - 'build'
       - '--build-arg'
-      - '$DB_PASSWORD=$_DB_PASSWORD'
+      - 'DB_PASSWORD=$_DB_PASSWORD'
       - '-t'
       - 'us-docker.pkg.dev/${PROJECT_ID}/gcr.io/${_IMAGE_NAME}:${BRANCH_NAME}'
       - '-f'
