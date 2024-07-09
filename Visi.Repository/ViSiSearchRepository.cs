@@ -42,6 +42,11 @@ public class ViSiSearchRepository : SearchRepository
 
     private async Task<SearchResult> SearchPatient(IArgumentCollection arguments, SearchOptions options)
     {
+        if (arguments.GetArgument("_sort") == null)
+        {
+            arguments.AddArgument(new Argument(ArgumentSource.Default, "_sort", "_id"));
+        }
+
         var query = _queryContext.CreateQuery(new PatientQueryFactory(_visiContext), arguments, options);
 
         var count = await query.ExecuteCount(_visiContext);

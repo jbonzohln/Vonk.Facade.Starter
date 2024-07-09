@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Options;
+using Oracle.EntityFrameworkCore.Query.Sql.Internal;
 
 namespace Visi.Repository.Models;
 
@@ -21,8 +23,13 @@ public class ViSiContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
+        {
             // optionsBuilder.UseSqlServer(_dbOptionsAccessor.Value.ConnectionString);
             optionsBuilder.UseOracle(_dbOptionsAccessor.Value.ConnectionString);
+            optionsBuilder
+                .ReplaceService<IQuerySqlGeneratorFactory, OracleQuerySqlGeneratorFactory,
+                    Oracle11.CustomOracleQuerySqlGeneratorFactory>();
+        }
     }
 }
 
