@@ -1,7 +1,7 @@
 {
   "LicenseOptions": {
     "Kind": "Evaluation",
-    "ValidUntil": "2024-07-08",
+    "ValidUntil": "2024-07-16",
     "Licensee": "jbonzo@hln.com",
     "Plugins": [
       "http://fire.ly/vonk/plugins/administration",
@@ -55,5 +55,5 @@
       "http://fire.ly/server/auth"
     ]
   },
-  "Signature": "cHp7IuPp7Z91cjUCuQwNvBpdikSPODV2yqp/nGmN0YitwVkZoQLcfl2IpJ7mIaSj7vqFOOHGuv8T5qs8UvykPLpsCzqrOYSyf1Cc0zkdptU+Dio7OALJA+QpDPQCb8L0Vkz5pjylfyaYcuDTelhUJil/r0tUbmRFjVB8wp37VFE="
+  "Signature": "dxXQQbuxVfGIKIfEZD6e/sf8z6Ih6tgo4Uylg5/qXstr3AQR9ijRlySbwr/dOv3z/RIyJLr89uPIl2gLHGKJtz7ahx1javIjqqSRy/+9s8YY1xUOzg/BZ+RRS5VP7GDDhJ103bxrPhFvyxHuF5UgK3ERGkdz8gEoQYESl5z8O+0="
 }
