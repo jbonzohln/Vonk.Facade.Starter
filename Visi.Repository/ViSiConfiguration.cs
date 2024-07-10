@@ -1,16 +1,27 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Visi.Repository.Models;
 using Vonk.Core.Pluggability;
 using Vonk.Core.Pluggability.ContextAware;
 using Vonk.Core.Repository;
+using Vonk.Core.Support;
 
 namespace Visi.Repository;
 
 [VonkConfiguration(240)]
 public static class ViSiConfiguration
 {
+    public static IApplicationBuilder Configure(this IApplicationBuilder app)
+    {
+        var pathBase = (app as WebApplication)?.Configuration.GetSection("Hosting").GetValue<string>("PathBase");
+        if (!pathBase.IsNullOrEmpty())
+            return app.UsePathBase((PathString)pathBase);
+        return app;
+    }
+
     public static IServiceCollection AddViSiServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ViSiContext>();
