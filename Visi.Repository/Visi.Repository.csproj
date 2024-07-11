@@ -16,6 +16,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="MongoDB.Driver" Version="2.25.0"/>
         <PackageReference Include="Oracle.EntityFrameworkCore" Version="8.23.40"/>
         <PackageReference Include="Vonk.Core" Version="$(FirelyServerVersion)"/>
         <PackageReference Include="Vonk.Fhir.R4" Version="$(FirelyServerVersion)"/>
@@ -23,6 +24,15 @@
         <PackageReference Include="Vonk.Facade.Relational" Version="$(FirelyServerVersion)"/>
         <!--    <PackageReference Include="Hl7.Fhir.Specification.STU3" Version="$(FirelySDKVersion)" /> -->
         <PackageReference Include="Hl7.Fhir.Specification.R4" Version="$(FirelySDKVersion)"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Firely.Server.Search.Shared.Indexing">
+            <HintPath>..\lib\Firely.Server.Search.Shared.Indexing.dll</HintPath>
+        </Reference>
+        <Reference Include="Vonk.Repository.MongoDb">
+            <HintPath>..\lib\Vonk.Repository.MongoDb.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
 </Project>

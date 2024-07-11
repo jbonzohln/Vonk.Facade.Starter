@@ -9,9 +9,9 @@ public class Child
 {
     [Column("CHILD_ID")] public ulong? ChildId { get; init; }
 
-    [Column("FIRST_NAME"), MaxLength(50)] public string FirstName { get; init; }
+    [Column("FIRST_NAME")] [MaxLength(50)] public string FirstName { get; init; }
 
-    [Column("LAST_NAME"), MaxLength(50)] public string LastName { get; init; }
+    [Column("LAST_NAME")] [MaxLength(50)] public string LastName { get; init; }
 
     [Column("BIRTH_DATE_TIME")] public DateTime BirthDateTime { get; init; }
 

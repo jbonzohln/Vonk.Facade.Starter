@@ -34,14 +34,14 @@ public class ResourceMapper
             ],
             Name =
             [
-                new HumanName()
+                new HumanName
                 {
                     Given =
                     [
                         source.FirstName
                     ],
                     Family = source.LastName
-                },
+                }
             ]
         }.ToIResource();
     }

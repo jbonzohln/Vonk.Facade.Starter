@@ -35,6 +35,7 @@ public class ViSiSearchRepository : SearchRepository
         return resourceType switch
         {
             nameof(Patient) => await SearchPatient(arguments, options),
+            nameof(AuditEvent) => new SearchResult(new List<IResource>(), 0),
             _ => throw new NotImplementedException($"ResourceType {resourceType} is not supported.")
         };
     }
@@ -42,9 +43,7 @@ public class ViSiSearchRepository : SearchRepository
     private async Task<SearchResult> SearchPatient(IArgumentCollection arguments, SearchOptions options)
     {
         if (!arguments.HasAny(arg => arg.ArgumentName == "_sort"))
-        {
             arguments.AddArgument(new Argument(ArgumentSource.Default, "_sort", "_id"));
-        }
 
         var query = _queryContext.CreateQuery(new PatientQueryFactory(_visiContext), arguments, options);
 
@@ -54,6 +53,7 @@ public class ViSiSearchRepository : SearchRepository
 
         var visiPatients = await query.Execute(_visiContext).ToListAsync();
 
-        return new SearchResult(visiPatients.Select(child => _resourceMapper.MapPatient(child)), query.GetPageSize(), count, query.GetSkip());
+        return new SearchResult(visiPatients.Select(child => _resourceMapper.MapPatient(child)), query.GetPageSize(),
+            count, query.GetSkip());
     }
 }
