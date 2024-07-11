@@ -20,7 +20,7 @@ public class PatientQueryFactory(DbContext onContext)
         {
             case VonkConstants.ParameterCodes.Id:
             {
-                if (!long.TryParse(value.Code, out var patientId))
+                if (!ulong.TryParse(value.Code, out var patientId))
                     throw new ArgumentException("Patient Id must be an integer value.");
                 return PredicateQuery(vp => vp.ChildId == patientId);
             }
