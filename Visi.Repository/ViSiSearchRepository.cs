@@ -28,6 +28,13 @@ public class ViSiSearchRepository : SearchRepository
         _resourceMapper = resourceMapper;
     }
 
+    public override Task<SearchResult> Search(IArgumentCollection arguments, SearchOptions options)
+    {
+        Console.WriteLine(arguments.ToString());
+        Console.WriteLine(options.ToString());
+        return base.Search(arguments, options);
+    }
+
     protected override async Task<SearchResult> Search(string resourceType, IArgumentCollection arguments,
         SearchOptions options)
     {

@@ -14,14 +14,6 @@ namespace Visi.Repository;
 [VonkConfiguration(240)]
 public static class ViSiConfiguration
 {
-    public static IApplicationBuilder Configure(this IApplicationBuilder app)
-    {
-        var pathBase = (app as WebApplication)?.Configuration.GetSection("Hosting").GetValue<string>("PathBase");
-        if (!pathBase.IsNullOrEmpty())
-            return app.UsePathBase((PathString)pathBase);
-        return app;
-    }
-
     public static IServiceCollection AddViSiServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ViSiContext>();

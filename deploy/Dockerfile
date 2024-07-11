@@ -6,7 +6,7 @@ RUN dotnet restore Vonk.Facade.Starter.sln
 RUN dotnet build Vonk.Facade.Starter.sln -c Release -o /app/build
 RUN dotnet publish Vonk.Facade.Starter.sln -c Release -o /app/publish
 
-FROM firely/server
+FROM firely/server:5.8.0
 
 ARG DB_PASSWORD=no_password_given
 
