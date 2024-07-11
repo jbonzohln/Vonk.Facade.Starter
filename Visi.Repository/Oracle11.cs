@@ -8,29 +8,19 @@ using Oracle.EntityFrameworkCore.Query.Sql.Internal;
 using Serilog;
 
 namespace Visi.Repository;
-
+#pragma warning disable EF1001
 public static class Oracle11
 {
-    public class CustomOracleSqlGeneratorFactory
+    private class CustomOracleSqlGeneratorFactory(
+        IOracleOptions oracleOptions,
+        IRelationalTypeMappingSource typeMappingSource,
+        CustomOracleQuerySqlGeneratorFactory customOracleQuerySqlGeneratorFactory)
     {
-        private CustomOracleQuerySqlGeneratorFactory _customOracleQuerySqlGeneratorFactory;
-        private readonly IOracleOptions _oracleOptions;
-        private readonly IRelationalTypeMappingSource _typeMappingSource;
-
-        public CustomOracleSqlGeneratorFactory(IOracleOptions oracleOptions,
-            IRelationalTypeMappingSource typeMappingSource,
-            CustomOracleQuerySqlGeneratorFactory customOracleQuerySqlGeneratorFactory)
-        {
-            _oracleOptions = oracleOptions;
-            _typeMappingSource = typeMappingSource;
-            _customOracleQuerySqlGeneratorFactory = customOracleQuerySqlGeneratorFactory;
-        }
-
         public QuerySqlGenerator Create()
         {
-            return new CustomOracleQuerySqlGenerator(_customOracleQuerySqlGeneratorFactory._dependencies,
-                _typeMappingSource,
-                _oracleOptions.OracleSQLCompatibility);
+            return new CustomOracleQuerySqlGenerator(customOracleQuerySqlGeneratorFactory._dependencies,
+                typeMappingSource,
+                oracleOptions.OracleSQLCompatibility);
         }
     }
 
@@ -54,14 +44,12 @@ public static class Oracle11
         }
     }
 
-    private class CustomOracleQuerySqlGenerator : OracleQuerySqlGenerator
+    private class CustomOracleQuerySqlGenerator(
+        QuerySqlGeneratorDependencies dependencies,
+        IRelationalTypeMappingSource typeMappingSource,
+        OracleSQLCompatibility oracleSqlCompatibility)
+        : OracleQuerySqlGenerator(dependencies, typeMappingSource, oracleSqlCompatibility)
     {
-        public CustomOracleQuerySqlGenerator(QuerySqlGeneratorDependencies dependencies,
-            IRelationalTypeMappingSource typeMappingSource, OracleSQLCompatibility oracleSQLCompatibility) : base(
-            dependencies, typeMappingSource, oracleSQLCompatibility)
-        {
-        }
-
         protected override Expression VisitSelect(SelectExpression selectExpression)
         {
             if (selectExpression.Limit != null)
@@ -107,3 +95,4 @@ public static class Oracle11
         }
     }
 }
+#pragma warning restore EF1001

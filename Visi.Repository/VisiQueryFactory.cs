@@ -5,13 +5,11 @@ using Vonk.Facade.Relational;
 
 namespace Visi.Repository;
 
-public abstract class VisiQueryFactory<E, Q> : RelationalQueryFactory<E, Q>
-    where E : class where Q : RelationalQuery<E>, new()
+public abstract class VisiQueryFactory<E, Q>(string forResourceType, DbContext onContext)
+    : RelationalQueryFactory<E, Q>(forResourceType, onContext)
+    where E : class
+    where Q : RelationalQuery<E>, new()
 {
-    protected VisiQueryFactory(string forResourceType, DbContext onContext) : base(forResourceType, onContext)
-    {
-    }
-
     public override Q EntryInformationModel(string informationModel)
     {
         if (!VonkConstants.Model.FhirR4.Equals(informationModel))

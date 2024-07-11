@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Hl7.Fhir.Model;
 using Microsoft.EntityFrameworkCore;
@@ -28,28 +29,19 @@ public class ViSiSearchRepository : SearchRepository
         _resourceMapper = resourceMapper;
     }
 
-    public override Task<SearchResult> Search(IArgumentCollection arguments, SearchOptions options)
-    {
-        Console.WriteLine(arguments.ToString());
-        Console.WriteLine(options.ToString());
-        return base.Search(arguments, options);
-    }
-
     protected override async Task<SearchResult> Search(string resourceType, IArgumentCollection arguments,
         SearchOptions options)
     {
-        switch (resourceType)
+        return resourceType switch
         {
-            case nameof(Patient):
-                return await SearchPatient(arguments, options);
-            default:
-                throw new NotImplementedException($"ResourceType {resourceType} is not supported.");
-        }
+            nameof(Patient) => await SearchPatient(arguments, options),
+            _ => throw new NotImplementedException($"ResourceType {resourceType} is not supported.")
+        };
     }
 
     private async Task<SearchResult> SearchPatient(IArgumentCollection arguments, SearchOptions options)
     {
-        if (arguments.GetArgument("_sort") == null)
+        if (!arguments.HasAny(arg => arg.ArgumentName == "_sort"))
         {
             arguments.AddArgument(new Argument(ArgumentSource.Default, "_sort", "_id"));
         }
@@ -57,14 +49,11 @@ public class ViSiSearchRepository : SearchRepository
         var query = _queryContext.CreateQuery(new PatientQueryFactory(_visiContext), arguments, options);
 
         var count = await query.ExecuteCount(_visiContext);
-        var patientResources = new List<IResource>();
-        if (count > 0)
-        {
-            var visiPatients = await query.Execute(_visiContext).ToListAsync();
 
-            foreach (var visiPatient in visiPatients) patientResources.Add(_resourceMapper.MapPatient(visiPatient));
-        }
+        if (count <= 0) return new SearchResult(new List<IResource>(), query.GetPageSize(), count, query.GetSkip());
 
-        return new SearchResult(patientResources, query.GetPageSize(), count, query.GetSkip());
+        var visiPatients = await query.Execute(_visiContext).ToListAsync();
+
+        return new SearchResult(visiPatients.Select(child => _resourceMapper.MapPatient(child)), query.GetPageSize(), count, query.GetSkip());
     }
 }

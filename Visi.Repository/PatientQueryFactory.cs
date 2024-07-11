@@ -9,16 +9,11 @@ using Vonk.Facade.Relational;
 
 namespace Visi.Repository;
 
-public class PatientQuery : RelationalQuery<Child>
-{
-}
+public class PatientQuery : RelationalQuery<Child>;
 
-public class PatientQueryFactory : VisiQueryFactory<Child, PatientQuery>
+public class PatientQueryFactory(DbContext onContext)
+    : VisiQueryFactory<Child, PatientQuery>(nameof(Patient), onContext)
 {
-    public PatientQueryFactory(DbContext onContext) : base(nameof(Patient), onContext)
-    {
-    }
-
     public override PatientQuery AddValueFilter(string parameterName, TokenValue value)
     {
         switch (parameterName)
@@ -47,56 +42,43 @@ public class PatientQueryFactory : VisiQueryFactory<Child, PatientQuery>
     {
         var isMissing = value.IsMissing; // true
 
-        switch (parameterName)
+        return parameterName switch
         {
-            //_id is a bit contrived, as Id is never null in Visi, so if isMissing = true, return false, otherwise return true for every record. 
-            case "_id": return PredicateQuery(p => !isMissing);
+            "_id" => PredicateQuery(p => !isMissing),
             //This is a more real example:
-            case "identifier": return PredicateQuery(p => p.ChildId == null == isMissing);
-            default:
-                throw new ArgumentException(
-                    $"Filtering for missing values using parameter {parameterName} is not supported.");
-        }
+            "identifier" => PredicateQuery(p => p.ChildId == null == isMissing),
+            _ => throw new ArgumentException(
+                $"Filtering for missing values using parameter {parameterName} is not supported.")
+        };
     }
 
     public override PatientQuery AddValueFilter(string parameterCode, DateTimeValue value)
     {
-        switch (parameterCode)
+        return parameterCode switch
         {
-            case "birthdate":
+            "birthdate" => value.Operator switch
             {
-                switch (value.Operator)
-                {
-                    case ComparisonOperator.GT:
-                    case ComparisonOperator.STARTS_AFTER:
-                        return PredicateQuery(p => p.BirthDateTime > value.Period.UpperBound);
-                    case ComparisonOperator.GTE:
-                        return PredicateQuery(p => p.BirthDateTime >= value.Period.LowerBound);
-                    case ComparisonOperator.LT:
-                    case ComparisonOperator.ENDS_BEFORE:
-                        return PredicateQuery(p => p.BirthDateTime < value.Period.LowerBound);
-                    case ComparisonOperator.LTE:
-                        return PredicateQuery(p => p.BirthDateTime <= value.Period.UpperBound);
-                    case ComparisonOperator.EQ:
-                        return PredicateQuery(p =>
-                            value.Period.LowerBound <= p.BirthDateTime && p.BirthDateTime <= value.Period.UpperBound);
-                    default:
-                        throw new NotSupportedException();
-                }
-            }
-            default:
-                throw new NotSupportedException();
-        }
+                ComparisonOperator.GT or ComparisonOperator.STARTS_AFTER => PredicateQuery(p =>
+                    p.BirthDateTime > value.Period.UpperBound),
+                ComparisonOperator.GTE => PredicateQuery(p => p.BirthDateTime >= value.Period.LowerBound),
+                ComparisonOperator.LT or ComparisonOperator.ENDS_BEFORE => PredicateQuery(p =>
+                    p.BirthDateTime < value.Period.LowerBound),
+                ComparisonOperator.LTE => PredicateQuery(p => p.BirthDateTime <= value.Period.UpperBound),
+                ComparisonOperator.EQ => PredicateQuery(p =>
+                    value.Period.LowerBound <= p.BirthDateTime && p.BirthDateTime <= value.Period.UpperBound),
+                _ => throw new NotSupportedException()
+            },
+            _ => throw new NotSupportedException()
+        };
     }
 
     protected override PatientQuery AddResultShape(SortShape sort)
     {
-        switch (sort.ParameterCode)
+        return sort.ParameterCode switch
         {
-            case "_id": return SortQuery(sort, p => p.ChildId);
-            case "identifier": return SortQuery(sort, p => p.ChildId);
-            default:
-                throw new ArgumentException($"Sorting on {sort.ParameterCode} is not supported.");
-        }
+            "_id" => SortQuery(sort, p => p.ChildId),
+            "identifier" => SortQuery(sort, p => p.ChildId),
+            _ => throw new ArgumentException($"Sorting on {sort.ParameterCode} is not supported.")
+        };
     }
 }
