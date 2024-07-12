@@ -27,20 +27,20 @@ public class ViSiChangeRepository(
     SearchParamRegistryFactory searchParamRegistryFactory)
     : IResourceChangeRepository
 {
-    private readonly SearchParamRegistry searchParamRegistry = searchParamRegistryFactory(_ => true, "ViSiChangeRepository");
-    
+    private readonly SearchParamRegistry _searchParamRegistry =
+        searchParamRegistryFactory(_ => true, "ViSiChangeRepository");
+
+    private readonly MongoClient _mongo = new MongoClient(mongoDbOptions.Value.ConnectionString);
+
     public async Task<IResource> Create(IResource input)
     {
         if (input.Type == nameof(AuditEvent))
         {
-            Console.WriteLine(mongoDbOptions.Value.ConnectionString);
-            
-            var client = new MongoClient(mongoDbOptions.Value.ConnectionString);
-            var collection = client.GetDatabase("fhir-audit").GetCollection<Entry>("AuditEvent");
+            var collection = _mongo.GetDatabase("fhir-audit").GetCollection<Entry>("AuditEvent");
 
             input = input.EnsureMeta();
             var resourceIndex = ResourceIndexer.Index(input.ToTypedElement(schemaProvider).Cache(),
-                new IndexOptions(searchParamRegistry));
+                new IndexOptions(_searchParamRegistry));
             foreach (var entry in resourceMapper.MapToEntries(resourceIndex,
                          input.GetChangeIndicator(), input.InformationModel))
                 await collection.InsertOneAsync(entry);
@@ -66,6 +66,7 @@ public class ViSiChangeRepository(
         {
             return Uuid.Generate().ToString();
         }
+
         throw new NotImplementedException();
     }
 
@@ -75,6 +76,7 @@ public class ViSiChangeRepository(
         {
             return "1";
         }
+
         throw new NotImplementedException();
     }
 }
