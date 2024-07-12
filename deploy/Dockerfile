@@ -8,8 +8,6 @@ RUN dotnet publish Vonk.Facade.Starter.sln -c Release -o /app/publish
 
 FROM firely/server:5.8.0
 
-ARG DB_PASSWORD=no_password_given
-
 WORKDIR /app
 COPY deploy/firelyserver-license.json .
 COPY deploy/appsettings.instance.json .
