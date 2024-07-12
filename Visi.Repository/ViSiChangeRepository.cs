@@ -33,7 +33,7 @@ public class ViSiChangeRepository(
     {
         if (input.Type == nameof(AuditEvent))
         {
-            Log.Information(mongoDbOptions.Value.ConnectionString);
+            Console.WriteLine(mongoDbOptions.Value.ConnectionString);
             
             var client = new MongoClient(mongoDbOptions.Value.ConnectionString);
             var collection = client.GetDatabase("fhir-audit").GetCollection<Entry>("AuditEvent");
