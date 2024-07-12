@@ -5,6 +5,8 @@ using Hl7.Fhir.Model;
 using Hl7.Fhir.Specification;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Serilog;
+using Serilog.Core;
 using Visi.Repository.Models;
 using Vonk.Core.Common;
 using Vonk.Core.ElementModel;
@@ -12,6 +14,7 @@ using Vonk.Core.Pluggability.ContextAware;
 using Vonk.Core.Repository;
 using Vonk.Repository.MongoDb;
 using Vonk.Repository.MongoDb.Db;
+using Task = System.Threading.Tasks.Task;
 
 namespace Visi.Repository;
 
@@ -30,6 +33,8 @@ public class ViSiChangeRepository(
     {
         if (input.Type == nameof(AuditEvent))
         {
+            Log.Information(mongoDbOptions.Value.ConnectionString);
+            
             var client = new MongoClient(mongoDbOptions.Value.ConnectionString);
             var collection = client.GetDatabase("fhir-audit").GetCollection<Entry>("AuditEvent");
 
